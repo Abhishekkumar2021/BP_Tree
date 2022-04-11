@@ -48,7 +48,7 @@ public:
                 b) root is full
             */
 
-            if (root->key.size() <= 2 * root->degree)
+            if (root->key.size() < 2 * root->degree)
             {
                 // first we have to find the correct position for the item to push
                 int i;
@@ -69,7 +69,7 @@ public:
             {
                 Node *newNode = new Node(d, true); // making a new dataNode;
                 numDataNodes++;
-                for (int i = 0; i <= d; i++)
+                for (int i = 0; i < d; i++)
                 {
                     pair<int, Node *> temp = root->key[root->key.size() - 1];
                     root->key.pop_back();
@@ -96,72 +96,101 @@ public:
         else
         {
             // cout << "Root is not a leaf node\n";
-            Node *cursor = root;
-            while (!cursor->isLeaf)
-            {
-                for (int i = 0; i < cursor->key.size(); i++)
-                {
-                    if (x < cursor->key[i].first)
-                    {
-                        cursor = cursor->key[i].second;
-                        break;
-                    }
-                    if (i == cursor->key.size() - 1)
-                    {
-                        cursor = cursor->last;
-                        break;
-                    }
-                }
-            }
-            /*
-                Two case arises again -
-                a) cursor is not full
-                b) cursor is full
-            */
-           if (cursor->key.size() <= 2 * cursor->degree)
-            {
-                // first we have to find the correct position for the item to push
-                int i;
-                for (i = 0; i < cursor->key.size(); i++)
-                {
-                    if (cursor->key[i].first < x)
-                        continue;
-                    else
-                        break;
-                }
-                if (i == cursor->key.size())
-                    cursor->key.push_back({x, NULL});
-                else
-                    cursor->key.insert(cursor->key.begin() + i, {x, NULL});
-                // cout<<"From 2\n";
-            }
-            else
-            {
-                Node *newNode = new Node(d, true); // making a new dataNode;
-                numDataNodes++;
-                for (int i = 0; i <= d; i++)
-                {
-                    pair<int, Node *> temp = cursor->key[cursor->key.size() - 1];
-                    cursor->key.pop_back();
-                    newNode->key.insert(newNode->key.begin(), temp);
-                }
-                cursor->last = newNode;
-                int i;
-                for (i = 0; i < newNode->key.size(); i++)
-                {
-                    if (cursor->key[i].first < x)
-                        continue;
-                    else
-                        break;
-                }
-                newNode->key.insert(newNode->key.begin() + i, {x, NULL});
-                Node *newIndex = new Node(t, false);
-                numIndexNodes++;
-                newIndex->key.push_back({newNode->key[0].first, cursor});
-                newIndex->last = newNode;
-                cursor = newIndex;
-                // cout<<"From 3\n";
-            }
+        //     Node *cursor = root;
+        //     while (!cursor->isLeaf)
+        //     {
+        //         //let us follow the aggressive splitting
+        //         if(cursor->key.size()==2*t){
+        //             Node *newNode = new Node(t, false); // making a new dataNode;
+        //         numIndexNodes++;
+        //         for (int i = 0; i <= d; i++)
+        //         {
+        //             pair<int, Node *> temp = cursor->key[cursor->key.size() - 1];
+        //             cursor->key.pop_back();
+        //             newNode->key.insert(newNode->key.begin(), temp);
+        //         }
+        //         cursor->last = newNode;
+        //         int i;
+        //         for (i = 0; i < newNode->key.size(); i++)
+        //         {
+        //             if (cursor->key[i].first < x)
+        //                 continue;
+        //             else
+        //                 break;
+        //         }
+        //         newNode->key.insert(newNode->key.begin() + i, {x, NULL});
+        //         Node *newIndex = new Node(t, false);
+        //         numIndexNodes++;
+        //         newIndex->key.push_back({newNode->key[0].first, cursor});
+        //         newIndex->last = newNode;
+        //         cursor = newIndex;
+        //         }
+
+
+
+        //         for (int i = 0; i < cursor->key.size(); i++)
+        //         {
+        //             if (x < cursor->key[i].first)
+        //             {
+        //                 cursor = cursor->key[i].second;
+        //                 break;
+        //             }
+        //             if (i == cursor->key.size() - 1)
+        //             {
+        //                 cursor = cursor->last;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     /*
+        //         Two case arises again -
+        //         a) cursor is not full
+        //         b) cursor is full
+        //     */
+        //    if (cursor->key.size() <= 2 * cursor->degree)
+        //     {
+        //         // first we have to find the correct position for the item to push
+        //         int i;
+        //         for (i = 0; i < cursor->key.size(); i++)
+        //         {
+        //             if (cursor->key[i].first < x)
+        //                 continue;
+        //             else
+        //                 break;
+        //         }
+        //         if (i == cursor->key.size())
+        //             cursor->key.push_back({x, NULL});
+        //         else
+        //             cursor->key.insert(cursor->key.begin() + i, {x, NULL});
+        //         // cout<<"From 2\n";
+        //     }
+        //     else
+        //     {
+        //         Node *newNode = new Node(d, true); // making a new dataNode;
+        //         numDataNodes++;
+        //         for (int i = 0; i <= d; i++)
+        //         {
+        //             pair<int, Node *> temp = cursor->key[cursor->key.size() - 1];
+        //             cursor->key.pop_back();
+        //             newNode->key.insert(newNode->key.begin(), temp);
+        //         }
+        //         cursor->last = newNode;
+        //         int i;
+        //         for (i = 0; i < newNode->key.size(); i++)
+        //         {
+        //             if (cursor->key[i].first < x)
+        //                 continue;
+        //             else
+        //                 break;
+        //         }
+        //         newNode->key.insert(newNode->key.begin() + i, {x, NULL});
+        //         Node *newIndex = new Node(t, false);
+        //         numIndexNodes++;
+        //         newIndex->key.push_back({newNode->key[0].first, cursor});
+        //         newIndex->last = newNode;
+        //         cursor = newIndex;
+        //         // cout<<"From 3\n";
+        //     }
 
 
         }
@@ -191,8 +220,6 @@ public:
 int main()
 {
 
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
     int d; // A leaf or data node has capacity to store 2d records. Each leaf node should contain at least d records, except when there is only one leaf node in the B+ tree.
     int t; // A non-leaf or index node has capacity to store 2t+1 keys. Each non-leaf node should contain at least t keys, except when there is only one non-leaf node in the B+ tree.
     cin >> d;
